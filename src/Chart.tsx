@@ -65,13 +65,9 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
         (currMax, [_, dataY]) => Math.max(currMax, dataY),
         -Infinity
     );
-    const dataYMin = data.reduce(
-        (currMin, [_, dataY]) => Math.min(currMin, dataY),
-        Infinity
-    );
-    const dataYRange = dataYMax - dataYMin;
+    const dataYRange = dataYMax;
 
-    const numYTicks = 5;
+    const numYTicks = dataYMax*2;
 
     const barPlotWidth = xAxisLength / data.length;
 
@@ -116,7 +112,7 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
             {data.map(([day, dataY], index) => {
                 const x = x0 + index * barPlotWidth;
 
-                const yRatio = (dataY - dataYMin) / dataYRange;
+                const yRatio = (dataY) / dataYRange;
 
                 const y = y0 + (1 - yRatio) * yAxisLength;
                 const height = yRatio * yAxisLength;
