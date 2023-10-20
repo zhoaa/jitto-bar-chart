@@ -82,9 +82,6 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
                 y2={xAxisY}
                 stroke={axisColour}
             />
-            <text fill={textColour} x={x0 + xAxisLength + 5} y={xAxisY + 4}>
-                X
-            </text>
 
             {/* Y axis */}
             <line x1={x0} y1={y0} x2={x0} y2={y0 + yAxisLength} stroke={axisColour} />
@@ -98,15 +95,12 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
                 return (
                     <g key={index}>
                         <line x1={x0} y1={y} x2={x0 - 5} y2={y} stroke={axisColour} />
-                        <text fill={textColour} x={x0 - 5} y={y + 5} textAnchor="end">
+                        <text fontFamily="Courier" fill={textColour} x={x0 - 5} y={y + 5} textAnchor="end">
                             {yLabel}
                         </text>
                     </g>
                 );
             })}
-            <text fill={textColour} x={x0} y={y0 - 8} textAnchor="middle">
-                Y
-            </text>
 
             {/* bar implementation, with animation implementation */}
             {data.map(([day, dataY], index) => {
@@ -135,7 +129,7 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
                     <g key={index}
                         onMouseOver={() => setShouldShowTooltip(true)}
                         onMouseLeave={() => setShouldShowTooltip(false)}>
-                        <text fill={textColour} x={x + barPlotWidth / 2} y={height > 0 ? y - 16 : yAxisLength + y0 - 16}
+                        <text fontFamily="Courier" fill={textColour} x={x + barPlotWidth / 2} y={height > 0 ? y - 16 : yAxisLength + y0 - 16}
                             textAnchor="middle"
                             display={shouldShowTooltip ? "" : "none"}>
                             {dataY}
@@ -148,7 +142,7 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
                                 height={height}
                                 fill={shouldShowTooltip ? selectColour : barColour}
                                 transform={`scale(1,-1) translate(0,-${chartHeight})`}>
-                                <animate attributeName="height" from="0" to={height} dur="1s" fill="freeze" />
+                                <animate attributeName="height" from="0" to={height} dur="1s"/>
                             </rect>) : (<rect x={x + sidePadding / 2}
                                 y={50}
                                 width={barPlotWidth - sidePadding}
@@ -157,7 +151,7 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
                                 transform={`scale(1,-1) translate(0,-${chartHeight})`}>
                             </rect>)
                         }
-                        <text fill={textColour} x={x + barPlotWidth / 2} y={xAxisY + 16} textAnchor="middle">
+                        <text fontFamily="Courier" fill={textColour} x={x + barPlotWidth / 2} y={xAxisY + 16} textAnchor="middle">
                             {day}
                         </text>
                         <title>{dataY}</title>
