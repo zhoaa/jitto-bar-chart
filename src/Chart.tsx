@@ -33,10 +33,11 @@ interface ChartProp {
     axisColour?: string;
     textColour?: string;
     barColour?: string;
+    selectColour?: string;
 }
 
 // Chart component creator, stringArray, axisColour, textColour, barColour are optional 
-export default function Chart({ intArray, stringArray = [], axisColour = "black", textColour = "black", barColour="black"}: ChartProp) {
+export default function Chart({ intArray, stringArray = [], axisColour = "black", textColour = "black", barColour="black", selectColour="white"}: ChartProp) {
     
     // data conversion to form that's easier to work with
     let data: [string, number][] = [];
@@ -138,17 +139,18 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
                     <g key={index}
                         onMouseOver={() => setShouldShowTooltip(true)}
                         onMouseLeave={() => setShouldShowTooltip(false)}>
-                        <text x={x + barPlotWidth / 2} y={height > 0 ? y - 16 : yAxisLength + y0 - 16}
+                        <text fill={textColour} x={x + barPlotWidth / 2} y={height > 0 ? y - 16 : yAxisLength + y0 - 16}
                             textAnchor="middle"
                             display={shouldShowTooltip ? "" : "none"}>
                             {dataY}
+                            
                         </text>
                         {
                             height > 0 ? (<rect x={x + sidePadding / 2}
                                 y={50}
                                 width={barPlotWidth - sidePadding}
                                 height={height}
-                                fill={shouldShowTooltip ? "blue" : "red"}
+                                fill={shouldShowTooltip ? selectColour : barColour}
                                 transform={`scale(1,-1) translate(0,-${chartHeight})`}>
                                 <animate attributeName="height" from="0" to={height} dur="1s" fill="freeze" />
                             </rect>) : (<rect x={x + sidePadding / 2}
@@ -159,7 +161,7 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
                                 transform={`scale(1,-1) translate(0,-${chartHeight})`}>
                             </rect>)
                         }
-                        <text x={x + barPlotWidth / 2} y={xAxisY + 16} textAnchor="middle">
+                        <text fill={textColour} x={x + barPlotWidth / 2} y={xAxisY + 16} textAnchor="middle">
                             {day}
                         </text>
                         <title>{dataY}</title>
