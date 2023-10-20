@@ -50,6 +50,7 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
         }
     }
     const { height: chartHeight, width: chartWidth } = useWindowDimensions();
+    const [tooltipStates, setTooltipStates] = useState(intArray.map(_i => false));
 
     const x0 = 50;
     const xAxisLength = chartWidth - x0 * 2;
@@ -121,21 +122,47 @@ export default function Chart({ intArray, stringArray = [], axisColour = "black"
 
                 const sidePadding = 10;
 
+                const shouldShowTooltip = tooltipStates[index];
+
+                const setShouldShowTooltip = (shouldShow: boolean) => {
+                    const nextTooltipStates = tooltipStates.map((t, i) => {
+                        if (i === index) {
+                            return shouldShow;
+                        }
+                        return false;
+                    })
+                    setTooltipStates(nextTooltipStates);
+                }
+
                 return (
-                    <g key={index}>
-                        <rect x={x + sidePadding / 2}
-                            fill={barColour}
-                            y={50}
-                            width={barPlotWidth - sidePadding}
-                            height={height}
-                            transform={`scale(1,-1) translate(0,-${chartHeight})`}
-                            >
-                            <title>{dataY}</title>
-                            <animate attributeName="height" from="0" to={height} dur="1s" fill="freeze" />
-                        </rect>
-                        <text fill={textColour} x={x + barPlotWidth / 2} y={xAxisY + 16} textAnchor="middle">
+                    <g key={index}
+                        onMouseOver={() => setShouldShowTooltip(true)}
+                        onMouseLeave={() => setShouldShowTooltip(false)}>
+                        <text x={x + barPlotWidth / 2} y={height > 0 ? y - 16 : yAxisLength + y0 - 16}
+                            textAnchor="middle"
+                            display={shouldShowTooltip ? "" : "none"}>
+                            {dataY}
+                        </text>
+                        {
+                            height > 0 ? (<rect x={x + sidePadding / 2}
+                                y={50}
+                                width={barPlotWidth - sidePadding}
+                                height={height}
+                                fill={shouldShowTooltip ? "blue" : "red"}
+                                transform={`scale(1,-1) translate(0,-${chartHeight})`}>
+                                <animate attributeName="height" from="0" to={height} dur="1s" fill="freeze" />
+                            </rect>) : (<rect x={x + sidePadding / 2}
+                                y={50}
+                                width={barPlotWidth - sidePadding}
+                                height={yAxisLength}
+                                fill="transparent"
+                                transform={`scale(1,-1) translate(0,-${chartHeight})`}>
+                            </rect>)
+                        }
+                        <text x={x + barPlotWidth / 2} y={xAxisY + 16} textAnchor="middle">
                             {day}
                         </text>
+                        <title>{dataY}</title>
                     </g>
                 );
             })}
