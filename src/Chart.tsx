@@ -36,7 +36,17 @@ interface ChartProp {
     selectColour?: string;
 }
 
-// Chart component creator, stringArray, axisColour, textColour, barColour are optional 
+/**
+ * Component for showing a bar chart based on props
+ *
+ * @component
+ * @param number [] intArray An array of numbers that the bar chart represents, from left to right.
+ * @param string [] stringArray An array of strings that represent each label for the bars, again going left to right. If no stringArray is provided, the X-axis is left unlabelled
+ * @param string axisColour The colour of the axes. This is black if not given.
+ * @param string textColour The colour of the text on the bar chart. This defaults to black if not given.
+ * @param string barColour This is the colour of the bars of the bar chart. This defaults to black if not given.
+ * @param string selectColour This is the colour the bars changed to if highlighted. This defaults to white if not given.
+ */
 export default function Chart({ intArray, stringArray = [], axisColour = "black", textColour = "black", barColour="black", selectColour="white"}: ChartProp) {
     
     // data conversion to form that's easier to work with
